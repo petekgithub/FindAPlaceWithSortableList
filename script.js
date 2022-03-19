@@ -21,9 +21,13 @@ let dragStartIndex;
 
 createList();
 
+
 // Insert list items into  DOM
 function createList() {
     [...visitablePlaces]
+        .map(a => ({ value: a, sort: Math.random() }))
+        .sort((a,b) =>a.sort - b.sort)
+        .map(a => a.value)
         .forEach((place, index) => {
             const listItem = document.createElement('li');
 
