@@ -2,16 +2,28 @@ const draggable_list = document.getElementById('draggable-list');
 const check = document.getElementById('check');
 
 const visitablePlaces = [
-    'Rothenburg', //10
-    'Rugen Island', //9
-    'Romantic Rhine', //8
-    'Cologne', //7
-    'Dresden', //6
-    'Lubeck', //5
-    'Heidelberg', //4
-    'Neuschwanstein', //3
-    'Munich', //2
+    // 'Rothenburg', //10    
+    // 'Rugen Island', //9
+    // 'Romantic Rhine', //8
+    // 'Cologne', //7
+    // 'Dresden', //6
+    // 'Lubeck', //5
+    // 'Heidelberg', //4
+    // 'Neuschwanstein', //3
+    // 'Munich', //2
+    // 'Berlin', //1
+    //------------
     'Berlin', //1
+    'Munich', //2
+    'Neuschwanstein', //3
+    'Heidelberg', //4
+    'Lubeck', //5
+    'Dresden', //6
+    'Cologne', //7
+    'Romantic Rhine', //8
+    'Rugen Island', //9
+    'Rothenburg' //10
+
 ];
 
 //store list items
@@ -26,7 +38,7 @@ createList();
 function createList() {
     [...visitablePlaces]
         .map(a => ({ value: a, sort: Math.random() }))
-        .sort((a,b) =>a.sort - b.sort)
+        .sort((a,b) => a.sort - b.sort)
         .map(a => a.value)
         .forEach((place, index) => {
             const listItem = document.createElement('li');
@@ -80,6 +92,7 @@ function dragDrop() {
   this.classList.remove('over');
 }
 
+// Swap list items that are drag and drop
 function swapItems(fromIndex,toIndex) {
     const itemOne = listItems[fromIndex].querySelector('.draggable');
     const itemTwo = listItems[toIndex].querySelector('.draggable');
@@ -89,16 +102,31 @@ function swapItems(fromIndex,toIndex) {
 
 }
 
+// Check the order of list items
+function checkOrder() {
+    listItems.forEach((listItem, index) => {
+        const placeName = listItem.querySelector('.draggable').innerText.trim();
+
+        if (placeName !== visitablePlaces[index]) {
+            listItem.classList.add('wrong');
+        } else {
+            listItem.classList.remove('wrong');
+            listItem.classList.add('right');
+
+        }
+    });
+}
+
 
 function addEventListeners() {
     const draggables = document.querySelectorAll('.draggable');
-    const dragListItem = document.querySelectorAll('.draggable-list li');
+    const dragListItems = document.querySelectorAll('.draggable-list li');
 
     draggables.forEach(draggable => {
         draggable.addEventListener('dragstart',dragStart)
     })
 
-    dragListItem.forEach(item => {
+    dragListItems.forEach(item => {
         item.addEventListener('dragover',dragOver);
         item.addEventListener('drop',dragDrop);
         item.addEventListener('dragenter',dragEnter);
@@ -107,3 +135,8 @@ function addEventListeners() {
     })
 
 }
+
+
+check.addEventListener('click', checkOrder); 
+
+
